@@ -7,7 +7,6 @@ import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import com.google.gson.Gson;
@@ -63,7 +62,7 @@ public class App
 //    collected.forEach(g -> System.out.println(g));
     System.out.println(collected.size());
     
-    customStats();
+    createStats();
     collected.forEach(g -> {
       for (Race r : Race.values()) {
         r.eval(g);
@@ -76,28 +75,39 @@ public class App
   {
     for (Race r : Race.values())
     {
-      r.addStat("BON1", g -> g.getOptions().isBonus1());
-      r.addStat("BON2", g -> g.getOptions().isBonus2());
-      r.addStat("BON3", g -> g.getOptions().isBonus3());
-      r.addStat("BON4", g -> g.getOptions().isBonus4());
-      r.addStat("BON5", g -> g.getOptions().isBonus5());
-      r.addStat("BON6", g -> g.getOptions().isBonus6());
-      r.addStat("BON7", g -> g.getOptions().isBonus7());
-      r.addStat("BON8", g -> g.getOptions().isBonus8());
-      r.addStat("BON9", g -> g.getOptions().isBonus9());
-      r.addStat("BON10", g -> g.getOptions().isBonus10());
+      r.addStat("Dig 2Coins", g -> g.getOptions().isBonus1());
+      r.addStat("No: Dig 2Coins", g -> !g.getOptions().isBonus1());
+      r.addStat("Cult 4Coins", g -> g.getOptions().isBonus2());
+      r.addStat("No: Cult 4Coins", g -> !g.getOptions().isBonus2());
+      r.addStat("6Coins", g -> g.getOptions().isBonus3());
+      r.addStat("No: 6Coins", g -> !g.getOptions().isBonus3());
+      r.addStat("3Power 1Ship", g -> g.getOptions().isBonus4());
+      r.addStat("No: 3Power 1Ship", g -> !g.getOptions().isBonus4());
+      r.addStat("3Power 1Worker", g -> g.getOptions().isBonus5());
+      r.addStat("No: 3Power 1Worker", g -> !g.getOptions().isBonus5());
+      r.addStat("SH/SA->4vp 2Worker", g -> g.getOptions().isBonus6());
+      r.addStat("No: SH/SA->4vp 2Worker", g -> !g.getOptions().isBonus6());
+      r.addStat("TP->2vp 1Worker", g -> g.getOptions().isBonus7());
+      r.addStat("No: TP->2vp 1Worker", g -> !g.getOptions().isBonus7());
+      r.addStat("1Priest", g -> g.getOptions().isBonus8());
+      r.addStat("No: 1Priest", g -> !g.getOptions().isBonus8());
+      r.addStat("D->1vp 2Coins", g -> g.getOptions().isBonus9());
+      r.addStat("No: D->1vp 2Coins", g -> !g.getOptions().isBonus9());
+      r.addStat("Ship->3vp 3Power", g -> g.getOptions().isBonus10());
+      r.addStat("No: Ship->3vp 3Power", g -> !g.getOptions().isBonus10());
       
       int[] rounds = new int[]{0,1,2,3,4,5,6};
       for (int round : rounds)
       {
-        r.addStat("SCORE1-R"+round, g -> g.getOptions().getScore1()==round);
-        r.addStat("SCORE2-R"+round, g -> g.getOptions().getScore2()==round);
-        r.addStat("SCORE3-R"+round, g -> g.getOptions().getScore3()==round);
-        r.addStat("SCORE4-R"+round, g -> g.getOptions().getScore4()==round);
-        r.addStat("SCORE5-R"+round, g -> g.getOptions().getScore5()==round);
-        r.addStat("SCORE6-R"+round, g -> g.getOptions().getScore6()==round);
-        r.addStat("SCORE7-R"+round, g -> g.getOptions().getScore7()==round);
-        r.addStat("SCORE8-R"+round, g -> g.getOptions().getScore8()==round);
+        String prefix = round==0 ? "No" : "R"+round;
+        r.addStat(prefix+":Dig->2vp 1Earth->Coin", g -> g.getOptions().getScore1()==round);
+        r.addStat(prefix+":Dwell->2 4Water->Priest", g -> g.getOptions().getScore3()==round);
+        r.addStat(prefix+":Dwell->2vp 4Fire->4Power", g -> g.getOptions().getScore5()==round);
+        r.addStat(prefix+":TP->3vp 4Water->Dig", g -> g.getOptions().getScore6()==round);
+        r.addStat(prefix+":TP->3vp 4Air->Dig", g -> g.getOptions().getScore8()==round);
+        r.addStat(prefix+":SA/SH->5vp 2Fire->Worker", g -> g.getOptions().getScore4()==round);
+        r.addStat(prefix+":SA/SH->5vp 2Air->Worker", g -> g.getOptions().getScore7()==round);
+        r.addStat(prefix+":Town->5vp 4Earth->Dig", g -> g.getOptions().getScore2()==round);
       }
     }
   }
@@ -115,7 +125,8 @@ public class App
       r.addStat("NoBON7", g -> !g.getOptions().isBonus7());
       r.addStat("BON8", g -> g.getOptions().isBonus8());
       r.addStat("BON9", g -> g.getOptions().isBonus9());
-      r.addStat("NoBON10", g -> !g.getOptions().isBonus10());
+      r.addStat("BON10", g -> !g.getOptions().isBonus10());
+      r.addStat("NoBON10", g -> g.getOptions().isBonus10());
       
       r.addStat("SCORE2-R1", g -> g.getOptions().getScore2()==1);
       r.addStat("SCORE6-R3", g -> g.getOptions().getScore6()==3);
