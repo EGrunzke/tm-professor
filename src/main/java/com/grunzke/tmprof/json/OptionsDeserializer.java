@@ -25,8 +25,9 @@ public class OptionsDeserializer implements JsonDeserializer<Options>
     options.setMiniExpansion1(global.has("option-mini-expansion-1"));
     options.setShippingBonus(global.has("option-shipping-bonus"));
     options.setVariableTurnOrder(global.has("option-variable-turn-order"));
+    options.setFireAndIceScoring(global.has("option-fire-and-ice-final-scoring"));
     options.setMap(global.has("map"));
-    options.setMap(global.has("drop-faction"));
+    options.setDrops(global.has("drop-faction"));
     
     scoringRounds();
     

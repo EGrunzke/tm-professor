@@ -1,16 +1,32 @@
 package com.grunzke.tmprof;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.grunzke.tmprof.json.OptionsDeserializer;
+import com.grunzke.tmprof.json.PlayerDeserializer;
+import com.grunzke.tmprof.json.RaceDeserializer;
 
 public enum Ratings
 {
   INSTANCE;
 
-  private HashMap<String, Integer> ratings;
+  private Map<String, Integer> ratings;
 
   private Ratings()
   {
-    ratings = new HashMap<String, Integer>();
+    ratings = new RatingDeserializer().read();
+  }
+  
+  private void manualInit()
+  {
     ratings.put("Xevoc", 1617);
     ratings.put("mikaeljt", 1532);
     ratings.put("demiurgsage", 1455);

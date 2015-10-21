@@ -4,11 +4,11 @@ import java.util.Arrays;
 
 public class Game
 {
-  private String game;
-  private int player_count;
-  private String last_update;
+  private String name;
+  private int playerCount;
+  private String lastUpdate;
   private Faction[] factions;
-  private Options events;
+  private Options options;
   
   public Game()
   {
@@ -16,12 +16,12 @@ public class Game
   
   public boolean isTournamentCompatible()
   {
-    if (events.hasDrops() ||
-        events.isFireAndIceScoring() ||
-        !events.isMiniExpansion1() ||
-        !events.isCultistPower() ||
-        !events.isShippingBonus() ||
-        !events.isVariableTurnOrder())
+    if (options.hasDrops() ||
+        options.isFireAndIceScoring() ||
+        !options.isMiniExpansion1() ||
+        !options.isCultistPower() ||
+        !options.isShippingBonus() ||
+        !options.isVariableTurnOrder())
     {
       return false;
     }
@@ -34,7 +34,7 @@ public class Game
       }
     }
     
-    return player_count == 4;
+    return playerCount == 4;
   }
   
   public boolean hasMinimumSkill(int minimum)
@@ -51,50 +51,67 @@ public class Game
     
     return true;
   }
-
-  public String getGame()
+  
+  public Faction getFactionByRace(Race r)
   {
-    return game;
+    for (Faction f : factions)
+    {
+      if (f.getFaction()==r)
+      {
+        return f;
+      }
+    }
+    return null;
   }
 
-  public void setGame(String game)
+  public String getName()
   {
-    this.game = game;
+    return name;
   }
 
-  public int getPlayer_count()
+  public void setName(String name)
   {
-    return player_count;
+    this.name = name;
   }
 
-  public void setPlayer_count(int player_count)
+  public int getPlayerCount()
   {
-    this.player_count = player_count;
+    return playerCount;
   }
 
-  public String getLast_update()
+  public void setPlayerCount(int playerCount)
   {
-    return last_update;
+    this.playerCount = playerCount;
   }
 
-  public void setLast_update(String last_update)
+  public String getLastUpdate()
   {
-    this.last_update = last_update;
+    return lastUpdate;
+  }
+
+  public void setLastUpdate(String lastUpdate)
+  {
+    this.lastUpdate = lastUpdate;
   }
   
-  public Options getEvents()
+  public Options getOptions()
   {
-    return events;
+    return options;
   }
 
-  public void setEvents(Options options)
+  public void setOptions(Options options)
   {
-    this.events = options;
+    this.options = options;
+  }
+  
+  public void setFactions(Faction[] factions)
+  {
+    this.factions = factions;
   }
 
   @Override
   public String toString()
   {
-    return getGame() + ": " + Arrays.toString(factions) + " map=" + events.isMap();
+    return getName() + ": " + Arrays.toString(factions) + " map=" + options.isMap();
   }
 }
