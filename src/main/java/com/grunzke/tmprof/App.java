@@ -59,16 +59,17 @@ public class App
       stream.forEach(g -> collected.add(g));
       br.close();
     }
-//    collected.forEach(g -> System.out.println(g));
-    System.out.println(collected.size());
-    
-    createStats();
-    collected.forEach(g -> {
-      for (Race r : Race.values()) {
-        r.eval(g);
-      }
-    });
-    printStats();
+    System.out.println(Game.getDelimitedDataHeader("\t"));
+    collected.forEach(g -> System.out.println(g.getDelimitedData("\t")));
+//    System.out.println(collected.size());
+//    
+//    createStats();
+//    collected.forEach(g -> {
+//      for (Race r : Race.values()) {
+//        r.eval(g);
+//      }
+//    });
+//    printStats();
   }
   
   private static void createStats()

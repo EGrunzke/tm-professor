@@ -1,6 +1,7 @@
 package com.grunzke.tmprof;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -62,5 +63,10 @@ public enum Race
     }
     
     stats.forEach(s -> s.eval(g, f));
+  }
+  
+  public static List<Race> getBaseRaces()
+  {
+    return Arrays.asList(new Race[]{SWARMLINGS, MERMAIDS, WITCHES, AUREN, ENGINEERS, DWARVES, GIANTS, CHAOSMAGICIANS, NOMADS, FAKIRS, HALFLINGS, CULTISTS, DARKLINGS, ALCHEMISTS });
   }
 }
