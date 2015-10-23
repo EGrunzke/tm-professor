@@ -13,6 +13,7 @@ import com.google.gson.GsonBuilder;
 import com.grunzke.tmprof.json.OptionsDeserializer;
 import com.grunzke.tmprof.json.PlayerDeserializer;
 import com.grunzke.tmprof.json.RaceDeserializer;
+import com.grunzke.tmprof.json.RatingDeserializer;
 
 public enum Ratings
 {

@@ -44,7 +44,7 @@ public class App
     List<Game> collected = new LinkedList<Game>();
     for (File file : new File("src/main/resources").listFiles(filter))
     {
-      System.out.println("== Reading " + file.getName());
+//      System.out.println("== Reading " + file.getName());
       BufferedReader br = new BufferedReader(new FileReader(file));
       List<Game> allGames = Arrays.asList(gson.fromJson(br, Game[].class));
       Stream<Game> stream = allGames.stream().filter(g -> {
@@ -59,10 +59,11 @@ public class App
       stream.forEach(g -> collected.add(g));
       br.close();
     }
-    System.out.println(Game.getDelimitedDataHeader("\t"));
-    collected.forEach(g -> System.out.println(g.getDelimitedData("\t")));
+    
+//    System.out.println(Game.getDelimitedDataHeader("\t"));
+//    collected.forEach(g -> System.out.println(g.getDelimitedData("\t")));
 //    System.out.println(collected.size());
-//    
+    
 //    createStats();
 //    collected.forEach(g -> {
 //      for (Race r : Race.values()) {
@@ -70,6 +71,40 @@ public class App
 //      }
 //    });
 //    printStats();
+    
+    printPValues(collected);
+  }
+
+  private static void printPValues(List<Game> collected)
+  {
+    for (Race r : Race.values())
+    {
+      r.addStat("Dig 2Coins", g -> g.getOptions().isBonus1());
+      r.addStat("Cult 4Coins", g -> g.getOptions().isBonus2());
+      r.addStat("6Coins", g -> g.getOptions().isBonus3());
+      r.addStat("3Power 1Ship", g -> g.getOptions().isBonus4());
+      r.addStat("3Power 1Worker", g -> g.getOptions().isBonus5());
+      r.addStat("SH/SA->4vp 2Worker", g -> g.getOptions().isBonus6());
+      r.addStat("TP->2vp 1Worker", g -> g.getOptions().isBonus7());
+      r.addStat("1Priest", g -> g.getOptions().isBonus8());
+      r.addStat("D->1vp 2Coins", g -> g.getOptions().isBonus9());
+      r.addStat("Ship->3vp 3Power", g -> g.getOptions().isBonus10());
+    }
+    
+    collected.forEach(g -> {
+      for (Race r : Race.values()) {
+        r.eval(g);
+      }
+    });
+    
+    Race.ENGINEERS.getStats().forEach(s -> System.out.print("\t" +s.getDescription()));
+    System.out.println();
+    Race.getBaseRaces().forEach(r -> System.out.println(r.getStatRow("\t")));
+    
+//    Race.ENGINEERS.addStat("BON1", g -> g.getOptions().isBonus1());
+//    Race.ENGINEERS.addStat("BON3", g -> g.getOptions().isBonus3());
+//    collected.forEach(g -> Race.ENGINEERS.eval(g));
+//    Race.ENGINEERS.getStats().forEach(System.out::println);
   }
   
   private static void createStats()
@@ -153,7 +188,7 @@ public class App
     {
       final int j = i;
       System.out.print(Race.ALCHEMISTS.getStats().get(i).getDescription() + ",");
-      races.forEach(r -> System.out.print(r.getStats().get(j).getAverage() + ","));
+      races.forEach(r -> System.out.print(r.getStats().get(j).getAverageWith() + ","));
       System.out.println();
     }
   }

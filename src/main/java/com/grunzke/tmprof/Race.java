@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public enum Race
 {
@@ -63,6 +64,13 @@ public enum Race
     }
     
     stats.forEach(s -> s.eval(g, f));
+  }
+  
+  public String getStatRow(String delimiter)
+  {
+    Stream<String> pValues = stats.stream().map(s -> Double.toString(s.getPValue()));
+    String row = pValues.reduce((s, t) -> s + delimiter + t).get();
+    return this.toString() + delimiter + row;
   }
   
   public static List<Race> getBaseRaces()

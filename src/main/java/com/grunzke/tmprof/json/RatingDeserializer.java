@@ -1,4 +1,4 @@
-package com.grunzke.tmprof;
+package com.grunzke.tmprof.json;
 
 import java.io.BufferedReader;
 import java.io.File;

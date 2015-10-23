@@ -1,13 +1,17 @@
 package com.grunzke.tmprof;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.DoubleStream;
+
+import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.math3.stat.inference.TTest;
 
 public class Stat
 {
-  private int with;
-  private int withCount;
-  private int without;
-  private int withoutCount;
+  private List<Integer> with;
+  private List<Integer> without;
   private String description;
   
   private Predicate<Game> pred;
@@ -16,6 +20,8 @@ public class Stat
   {
     this.pred = pred;
     this.description = description;
+    this.with = new ArrayList<>();
+    this.without = new ArrayList<>();
   }
   
   public void eval(Game g, Faction f)
@@ -23,19 +29,38 @@ public class Stat
     int score = f.getScore();
     if (pred.test(g))
     {
-      with += score;
-      withCount++;
+      with.add(score);
     }
     else
     {
-      without += score;
-      withoutCount++;
+      without.add(score);
     }
   }
   
-  public double getAverage()
+  public double getAverageWith()
   {
-    return (with*1.0)/withCount;
+    Integer sum = with.stream().reduce(0, Integer::sum);
+    return sum.doubleValue()/with.size();
+  }
+  
+  public double getAverageWithout()
+  {
+    Integer sum = without.stream().reduce(0, Integer::sum);
+    return sum.doubleValue()/without.size();
+  }
+  
+  public double getPValue()
+  {
+    double[] withArray = with.stream().mapToDouble(Integer::doubleValue).toArray();
+    double[] withoutArray = without.stream().mapToDouble(Integer::doubleValue).toArray();
+    if (withArray.length<2 || withoutArray.length<2)
+    {
+      return Double.NaN;
+    }
+    else
+    {
+      return new TTest().homoscedasticTTest(withArray, withoutArray);
+    }
   }
   
   public String getDescription()
@@ -46,9 +71,6 @@ public class Stat
   @Override
   public String toString()
   {
-    double withAverage = (with*1.0)/withCount;
-    double withoutAverage = (without*1.0)/withoutCount;
-//    return String.format("%s: With(%d)=%f Without(%d)=%f", description, withCount, withAverage, withoutCount, withoutAverage);
-    return String.format("%s,%f,%f", description, withAverage, withoutAverage);
+    return String.format("%s,%f,%f,%f", description, getAverageWith(), getAverageWithout(), getPValue());
   }
 }
